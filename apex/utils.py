@@ -180,7 +180,7 @@ def get_task_type(d: dict):
     return task_type, run_op
 
 
-def judge_flow(parameter, specify: str):
+def judge_flow(parameter: list, specify: str):
     # identify type of flow and input parameter file
     num_args = len(parameter)
     if num_args == 1:
