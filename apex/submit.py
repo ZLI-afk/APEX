@@ -249,9 +249,9 @@ def submit_workflow(
 
 
 def submit_from_args(
-        parameters: list[os.PathLike],
+        parameters,
         config_file: os.PathLike,
-        work_dirs: list[os.PathLike],
+        work_dirs,
         indicated_flow_type: str,
         is_debug=False,
 ):
