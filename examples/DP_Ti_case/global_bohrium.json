@@ -1,0 +1,15 @@
+{
+    "dflow_host": "https://workflows.deepmodeling.com",
+    "k8s_api_server": "https://workflows.deepmodeling.com",
+    "email": "a931126924@outlook.com",
+    "password": "1tmpaccountpasswd!",
+    "program_id": 26924,
+    "apex_image_name":"registry.dp.tech/dptech/prod-11045/apex-dependency:1.2.0",
+    "lammps_image_name": "registry.dp.tech/dptech/prod-11045/deepmdkit-phonolammps:2.1.1",
+    "group_size": 3,
+    "pool_size": 1,
+    "run_command":"lmp -in in.lammps",
+    "batch_type": "Bohrium",
+    "context_type": "Bohrium",
+    "scass_type":"c16_m62_1 * NVIDIA T4"
+}
