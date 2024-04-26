@@ -128,6 +128,30 @@ def inter_deepmd(param):
     ret += "pair_coeff * * %s\n" % type_map_list_str
     return ret
 
+def inter_dpa2(param):
+    models = param["model_name"]
+    deepmd_version = param["deepmd_version"]
+    ret = "plugin load /root/Softwares/dpkit/deepmd-kit/dp/lib/libdeepmd_lmp.so\n"
+    ret += "pair_style deepmd "
+    model_list = ""
+    type_map_list = [i for i in param["param_type"]]
+    type_map_list_str = " ".join(type_map_list)
+    for ii in models:
+        model_list += ii + " "
+    if Version(deepmd_version) < Version("1"):
+        ## DeePMD-kit version == 0.x
+        if len(models) > 1:
+            ret += "%s 10 model_devi.out\n" % model_list
+        else:
+            ret += models[0] + "\n"
+    else:
+        ## DeePMD-kit version >= 1
+        if len(models) > 1:
+            ret += "%s out_freq 10 out_file model_devi.out\n" % model_list
+        else:
+            ret += models[0] + "\n"
+    ret += "pair_coeff * * %s\n" % type_map_list_str
+    return ret
 
 def inter_mace(param):
     ret = ""
