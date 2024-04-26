@@ -63,7 +63,7 @@ class Lammps(Task):
 
     def set_model_param(self):
         deepmd_version = self.inter.get("deepmd_version", "2.1.1")
-        if self.inter_type == "deepmd":
+        if self.inter_type in ["deepmd", "dpa2"]:
             model_name = os.path.basename(self.model)
             self.model_param = {
                 "type": self.inter_type,
