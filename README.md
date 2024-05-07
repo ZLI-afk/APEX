@@ -7,6 +7,7 @@
 
 [APEX](https://github.com/deepmodeling/APEX): Alloy Property EXplorer is a component of the [AI Square](https://aissquare.com/) project that involves the restructuring of the [DP-GEN](https://github.com/deepmodeling/dpgen) `auto_test` module to develop a versatile and extensible Python package for general alloy property calculations. This package enables users to conveniently establish a wide range of cloud-native property-test workflows by utilizing various computational approaches, including LAMMPS, VASP, ABACUS, and others.
 
+## v1.2 Main Features Update
 * Add a `retrieve` sub-command to allow results to be retrieved independently and manually for multiple properties (Remove `Distributor` and `Collector` OP)
 * Support common **dflow operations** with terminal commands
 * Incorporate results `archive` function to both local paths and NoSQL database ([MongoDB](https://www.mongodb.com/) and [DynamoDB](https://aws.amazon.com/cn/dynamodb/))
@@ -16,15 +17,23 @@
 * Add four additional **ML** pair styles (`snap`, `gap`, `rann` and `mace`) and an extra `meam-spline` in LAMMPS interation type support
 * Modify the single-step run command from `test` to `do` for improved clarity and consistencey
 
-## How to cite APEX
-If you use APEX in your future research, please cite the following paper for general purpose: 
+## APEX Bohrium App
+[![](https://img.shields.io/badge/APP-BohriumApp-orange.svg)](https://app.bohrium.dp.tech/apex/)
 
+APEX also provides a web-based [Bohrium App](https://app.bohrium.dp.tech/apex/) for rapid and easy alloy property calculations without intensive JSON configuration (Note: one will need a Bohrium account to access this service).
+
+## How to cite APEX
 [![](https://img.shields.io/badge/DOI-10.48550/arXiv.2404.17330-red.svg)](https://doi.org/10.48550/arXiv.2404.17330)
+
+If you use APEX in your research, please cite the following paper for general purpose: 
+
 > Z. Li, T. Wen, Y. Zhang, X. Liu, C. Zhang, A. S. L. S. Pattamatta, X. Gong, B. Ye, H.Wang, L. Zhang, D. J. Srolovitz, An extendable cloud-native alloy property explorer (2024). arXiv:2404.17330.
 
 ## Table of Contents
 
 - [APEX: Alloy Property EXplorer](#apex-alloy-property-explorer)
+  - [v1.2 Main Features Update](#v12-main-features-update)
+  - [APEX Bohrium App](#apex-bohrium-app)
   - [How to cite APEX](#how-to-cite-apex)
   - [Table of Contents](#table-of-contents)
   - [1. Overview](#1-overview)
