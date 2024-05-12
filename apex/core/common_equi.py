@@ -104,7 +104,7 @@ def make_equi(confs, inter_param, relax_param):
         # copy POSCARs to mp-xxx/relaxation/relax_task
         if os.path.isfile(POSCAR):
             os.remove(POSCAR)
-        os.symlink(os.path.relpath(poscar), POSCAR)
+        shutil.copyfile(os.path.relpath(poscar), POSCAR)
         os.chdir(cwd)
     task_dirs.sort()
     # generate task files

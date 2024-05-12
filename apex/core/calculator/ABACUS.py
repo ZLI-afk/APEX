@@ -1,4 +1,5 @@
 import os
+import shutil
 import logging
 
 import dpdata
@@ -84,7 +85,7 @@ class ABACUS(Task):
                 target_file = os.path.join("./pp_orb/", tmpf.split("/")[-1])
                 if os.path.isfile(target_file):
                     os.remove(target_file)
-                os.symlink(linked_file, target_file)
+                shutil.copyfile(linked_file, target_file)
 
         os.chdir(cwd)
 
@@ -179,10 +180,10 @@ class ABACUS(Task):
         cwd = os.getcwd()
         os.chdir(output_dir)
         if not os.path.islink("INPUT"):
-            os.symlink("../INPUT", "INPUT")
+            shutil.copyfile("../INPUT", "INPUT")
         elif not "../INPUT" == os.readlink("INPUT"):
             os.remove("INPUT")
-            os.symlink("../INPUT", "INPUT")
+            shutil.copyfile("../INPUT", "INPUT")
         os.chdir(cwd)
 
         if "kspacing" in incar:
