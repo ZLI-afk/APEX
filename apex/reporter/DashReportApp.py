@@ -128,16 +128,16 @@ class DashReportApp:
 
         # find the first default combination of configuration and property exist
         default_conf = None
-        default_dataset = None
+        default_prop = None
         for w_key, w in self.datasets.items():
             if not w:
                 continue
             for d_key, d in w.items():
                 if d:
                     default_conf = d_key
-                    default_dataset = next(iter(d.keys()))
+                    default_prop = next(iter(d.keys()))
                     break
-            if default_dataset:
+            if default_prop:
                 break
 
         radio_inline = False
@@ -158,7 +158,7 @@ class DashReportApp:
                 dcc.Dropdown(
                     id='props-dropdown',
                     options=[{'label': name, 'value': name} for name in self.all_props],
-                    value=default_dataset,
+                    value=default_prop,
                     style={"fontSize": UI_FRONTSIZE}
                 ),
                 html.Br(),
