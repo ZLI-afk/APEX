@@ -35,6 +35,8 @@ class Elastic(Property):
             self.conventional = parameter["conventional"]
             parameter.setdefault("ieee", True)
             self.ieee = parameter["ieee"]
+            parameter.setdefault("supercell_size", None)
+            self.supercell_size = parameter["supercell_size"]
         parameter.setdefault("cal_type", "relaxation")
         self.cal_type = parameter["cal_type"]
         default_cal_setting = {
@@ -150,6 +152,14 @@ class Elastic(Property):
                 op = SymmOp.from_rotation_and_translation(rot)
                 ss.apply_operation(op)
                 ss.to(os.path.join(path_to_work, "POSCAR.ieee"), "POSCAR")
+
+            # make supercell
+            if self.supercell_size:
+                ss.make_supercell(
+                    scaling_matrix=[
+                        self.supercell_size[0], self.supercell_size[1], self.supercell_size[2]
+                    ]
+                )
 
             dfm_ss = DeformedStructureSet(
                 ss,

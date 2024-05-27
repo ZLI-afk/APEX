@@ -215,7 +215,7 @@ class DashReportApp:
                     # set color and width of reference lines
                     if prop_type != 'vacancy':
                         for trace in iter(traces):
-                            if trace_name.split('/')[-1] in ['DFT', 'REF']:
+                            if trace_name.split('/')[-1] in ['DFT', 'REF', 'DFT(abacus)']:
                                 trace.update({'line': {'color': 'black', 'width': REF_LINE_SIZE},
                                               'marker': {'color': 'black', 'size': REF_MARKER_SIZE}})
                             else:

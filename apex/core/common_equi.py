@@ -187,7 +187,11 @@ def post_equi(confs, inter_param):
     for ii in task_dirs:
         poscar = os.path.join(ii, "POSCAR")
         inter = make_calculator(inter_param, poscar)
-        res = inter.compute(ii)
+        try:
+            res = inter.compute(ii)
+        except:
+            logging.warning(f"Error in {ii}, skip")
+            continue
         contcar = os.path.join(ii, "CONTCAR")
         try:
             ss = Structure.from_file(contcar)

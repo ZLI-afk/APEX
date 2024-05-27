@@ -198,6 +198,7 @@ class SimplePropertySteps(Steps):
                     "backward_list": ["OUT.ABACUS", "log"],
                     "log_name": "log"
                 },
+                # TODO: fix force upload "./" in optional_artifact
                 artifacts={
                     "task_path": make.outputs.artifacts["task_paths"],
                     "optional_artifact": upload_artifact({"pp_orb": "./"})
