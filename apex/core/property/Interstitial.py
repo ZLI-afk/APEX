@@ -183,7 +183,7 @@ class Interstitial(Property):
                 if os.path.isfile(self.insert_element_task):
                     os.remove(self.insert_element_task)
                 if not self.insert_ele:
-                    self.insert_ele = [ss.composition.elements[0].symbol]
+                    self.insert_ele = [str(ii) for ii in set(ss.composition.elements)]
                 for ii in self.insert_ele:
                     if self.structure_type in PREDEFINED_LIST:
                         # produce a pseudo interstitial structure for later modification
