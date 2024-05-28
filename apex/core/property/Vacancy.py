@@ -126,6 +126,7 @@ class Vacancy(Property):
                     POSCAR = "POSCAR"
 
                 equi_contcar = os.path.join(path_to_equi, CONTCAR)
+                orig_poscar = os.path.join(path_to_equi, POSCAR)
                 if not os.path.exists(equi_contcar):
                     raise RuntimeError("please do relaxation first")
 

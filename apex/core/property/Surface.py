@@ -136,6 +136,7 @@ class Surface(Property):
                     POSCAR = "POSCAR"
 
                 equi_contcar = os.path.join(path_to_equi, CONTCAR)
+                orig_poscar = os.path.join(path_to_equi, POSCAR)
                 if not os.path.exists(equi_contcar):
                     raise RuntimeError("please do relaxation first")
 
@@ -146,7 +147,7 @@ class Surface(Property):
                     ss = Structure.from_file("CONTCAR.tmp")
                     os.remove("CONTCAR.tmp")
                 else:
-                    ptypes = vasp_utils.get_poscar_types(equi_contcar)
+                    ptypes = vasp_utils.get_poscar_types(orig_poscar)
                     # gen structure
                     ss = Structure.from_file(equi_contcar)
 
