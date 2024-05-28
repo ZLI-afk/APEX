@@ -445,21 +445,9 @@ class Interstitial(Property):
             logging.info(f"gen {type_str}")
             os.chdir(cwd)
 
-        total_task = len(self.dss) + len(interstitial_dict)
+        total_task = len(self.dss) + len(interstitial_dict) - 1
 
         return total_task
-
-    def _rotate_hcp(self, poscar):
-        ss = Structure.from_file(poscar)
-        theta = np.pi / 3
-        rot_m = np.array([
-            [np.cos(theta), -np.sin(theta), 0],
-            [np.sin(theta), np.cos(theta), 0],
-            [0, 0, 1]
-        ])
-        op = SymmOp.from_rotation_and_translation(rot_m)
-        ss.apply_operation(op)
-        ss.to(poscar, "POSCAR")
 
 
     def post_process(self, task_list):
