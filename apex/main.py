@@ -720,10 +720,14 @@ def main():
             task_left -= 1
             if step['phase'] == 'Succeeded':
                 logging.info(f"Retrieving {key}...({task_left} more left)")
-                download_artifact(
-                    artifact=step.outputs.artifacts['retrieve_path'],
-                    path=work_dir
-                )
+                try:
+                    download_artifact(
+                        artifact=step.outputs.artifacts['retrieve_path'],
+                        path=work_dir
+                    )
+                except Exception:
+                    logging.warning(f"Failed to retrieve {key}...({task_left} more left)")
+                    continue
             else:
                 logging.warning(f"Step {key} with status: {step['phase']} will be skipping...({task_left} more left)")
     elif args.cmd == 'do':
