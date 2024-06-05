@@ -508,6 +508,9 @@ class Interstitial(Property):
             for idid, ii in enumerate(all_tasks, start=0): # skip task.000000
                 structure_dir = os.path.basename(ii)
                 task_result = loadfn(all_res[idid])
+                if not task_result:
+                    logging.warning("task %s is not finished" % ii)
+                    continue
                 interstitial_type = loadfn(os.path.join(ii, 'interstitial_type.json'))
                 natoms = sum(task_result["atom_numbs"])
                 evac = task_result["energies"][-1] - equi_epa * natoms

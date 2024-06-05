@@ -219,6 +219,9 @@ class Surface(Property):
 
             for ii in all_tasks:
                 task_result = loadfn(os.path.join(ii, "result_task.json"))
+                if not task_result:
+                    logging.warning("task %s is not finished" % ii)
+                    continue
                 natoms = np.sum(task_result["atom_numbs"])
                 epa = task_result["energies"][-1] / natoms
                 AA = np.linalg.norm(
