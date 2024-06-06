@@ -216,6 +216,8 @@ def post_property(confs, inter_param, property_list):
             path_to_work = os.path.join(ii, property_type + "_" + suffix)
             prop = make_property_instance(jj, inter_param_prop)
             param_json = os.path.join(path_to_work, "param.json")
+            if not os.path.exists(param_json):
+                continue
             param_dict = prop.parameter
             param_dict.setdefault("skip", False) # default of "skip" is False
             try:
