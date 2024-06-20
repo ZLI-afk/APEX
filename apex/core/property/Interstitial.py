@@ -24,7 +24,7 @@ from dflow.python import upload_packages
 
 upload_packages.append(__file__)
 
-PREDEFINED_LIST = ['bcc', 'fcc', 'hcp']
+PREDEFINED_LIST = []
 TOL = 1e-5
 
 class Interstitial(Property):
