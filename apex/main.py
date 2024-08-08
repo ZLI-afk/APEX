@@ -19,6 +19,7 @@ from apex.step import do_step_from_args
 from apex.submit import submit_from_args
 from apex.archive import archive_from_args
 from apex.report import report_from_args
+from apex.finetune import finetune_from_args
 from apex.utils import load_config_file
 
 
@@ -458,6 +459,41 @@ def parse_args():
         help="(Optional) Working directory or json file path to be reported",
     )
 
+    ##########################################
+    # Finetune (not ready)
+    parser_finetune = subparsers.add_parser(
+        "finetune",
+        help="Invoke property finetune by external concurrent learning framework",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser_finetune.add_argument(
+        "parameter", type=str, nargs='+',
+        help='Json files to indicate calculation parameters'
+    )
+    parser_finetune.add_argument(
+        "-c", "--config",
+        type=str, nargs='?',
+        default='./global.json',
+        help="The json file of global config",
+    )
+    parser_finetune.add_argument(
+        "-e", "--external",
+        type=str, nargs='?',
+        default='./input.json',
+        help="The input parameter file of external concurrent learning framework to be extended",
+    )
+    parser_finetune.add_argument(
+        "-w", "--work",
+        type=str, nargs='+',
+        default='.',
+        help="(Optional) Working directory",
+    )
+    parser_archive.add_argument(
+        '-m', "--method",
+        choices=['dpgen2'],
+        help="(Optional) Specify concurrent learning method: (default: dpgen2)"
+    )
+
     parsed_args = parser.parse_args()
     # print help if no parser
     if not parsed_args.cmd:
@@ -534,6 +570,13 @@ def main():
             flow_name=args.name,
             submit_only=args.submit_only,
             is_debug=args.debug
+        )
+    elif args.cmd == "finetune":
+        header()
+        finetune_from_args(
+            parameters=args.parameter,
+            config_file=args.config,
+            external_config_file=args.external,
         )
     elif args.cmd == "list":
             config_dflow(args.config)
