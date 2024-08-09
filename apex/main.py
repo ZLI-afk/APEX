@@ -477,10 +477,9 @@ def parse_args():
         help="The json file of global config",
     )
     parser_finetune.add_argument(
-        "-e", "--external",
+        "-t", "--template",
         type=str, nargs='?',
-        default='./input.json',
-        help="The input parameter file of external concurrent learning framework to be extended",
+        help="The template input parameter file of external concurrent learning framework to be extended",
     )
     parser_finetune.add_argument(
         "-w", "--work",
@@ -488,10 +487,15 @@ def parse_args():
         default='.',
         help="(Optional) Working directory",
     )
-    parser_archive.add_argument(
+    parser_finetune.add_argument(
         '-m', "--method",
         choices=['dpgen2'],
         help="(Optional) Specify concurrent learning method: (default: dpgen2)"
+    )
+    parser_finetune.add_argument(
+        "-p", "--prepare",
+        action="store_true",
+        help="Only prepare the concurrent learning framework input parameter file without invoking",
     )
 
     parsed_args = parser.parse_args()
@@ -576,7 +580,10 @@ def main():
         finetune_from_args(
             parameters=args.parameter,
             config_file=args.config,
-            external_config_file=args.external,
+            external_config_template=args.template,
+            work_dirs=args.work,
+            method=args.method,
+            prepare_only=args.prepare
         )
     elif args.cmd == "list":
             config_dflow(args.config)
