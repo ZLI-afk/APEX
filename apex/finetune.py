@@ -56,7 +56,7 @@ class DPGen2(ConcurrentLearningFramework):
             # if line starts with "dump", replace the word after "dump" by "dpgen2_dump
             if line.startswith("dump"):
                 new_line = line.split()
-                new_line[1] = "dpgen2_dump"
+                new_line[1] = "dpgen_dump"
                 lines[idx] = " ".join(new_line) + "\n"
         with open(inlammps, 'w') as f:
             f.writelines(lines)
