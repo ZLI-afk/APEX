@@ -68,6 +68,7 @@ class Config:
     is_bohrium_dflow: bool = False
     submit_only: bool = False
     flow_name: str = None
+    exclude_upload_files: list = field(default_factory=list)
 
     database_type: str = 'local'
     archive_method: str = 'sync'
