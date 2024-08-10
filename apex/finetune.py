@@ -48,12 +48,26 @@ class DPGen2(ConcurrentLearningFramework):
     def config(self):
         return self._config
 
+    @staticmethod
+    def modify_inlammps(inlammps: os.PathLike):
+        with open(inlammps, 'r') as f:
+            lines = f.readlines()
+        for idx, line in enumerate(lines):
+            # if line starts with "dump", replace the word after "dump" by "dpgen2_dump
+            if line.startswith("dump"):
+                new_line = line.split()
+                new_line[1] = "dpgen2_dump"
+                lines[idx] = " ".join(new_line) + "\n"
+        with open(inlammps, 'w') as f:
+            f.writelines(lines)
+
     def prepare(self, target_confs: dict[os.PathLike: List[os.PathLike]]):
         self._config["explore"]["configuration_prefix"] = None
         sys_idx = 0
         configurations_list = []
         stages_list = []
         for inlammps, poscars in target_confs.items():
+            self.modify_inlammps(inlammps)
             configurations_list.append({
                 "type": "file",
                 "files": poscars,
