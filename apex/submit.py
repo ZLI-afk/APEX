@@ -81,10 +81,10 @@ def pack_upload_dir(
     #conf_root_list = list(set(conf_root_list))
     #conf_root_list.sort()
     #ignore_copy_list = conf_root_list
-    exclude_files = exclude_upload_files.append("all_result.json")
+    exclude_upload_files.append("all_result.json")
     copy_all_other_files(
         work_dir, upload_dir,
-        exclude_files=exclude_files,
+        exclude_files=exclude_upload_files,
         include_dirs=list(include_dirs)
     )
     for ii in conf_dirs:
