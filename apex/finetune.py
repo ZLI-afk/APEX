@@ -201,7 +201,7 @@ def finetune(
     target_confs = {}
     for ii in path_to_prop_list:
         poscars = glob.glob(os.path.join(ii, 'task.000*/POSCAR'))
-        inlammps = glob.glob(os.path.join(ii, 'task.000000/in.lammps'))[0]
+        inlammps = glob.glob(os.path.join(ii, 'in.lammps'))[0]
         target_confs[inlammps] = poscars
 
     print('===>>> STEP 3: Invoke External Concurrent Learning Framework')
