@@ -57,6 +57,7 @@ class Config:
     group_size: int = None
     pool_size: int = None
     upload_python_packages: list = field(default_factory=list)
+    exclude_upload_files: list = field(default_factory=list)
     lammps_image_name: str = None
     lammps_run_command: str = None
     vasp_image_name: str = None
@@ -68,7 +69,6 @@ class Config:
     is_bohrium_dflow: bool = False
     submit_only: bool = False
     flow_name: str = None
-    exclude_upload_files: list = field(default_factory=list)
 
     database_type: str = 'local'
     archive_method: str = 'sync'
