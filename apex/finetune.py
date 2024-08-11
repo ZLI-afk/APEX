@@ -7,8 +7,11 @@ from monty.serialization import loadfn, dumpfn
 from pathlib import Path
 from abc import ABC, abstractmethod
 
+from dpdata.periodic_table import Element
+
 from apex.submit import submit_workflow
 from apex.step import do_step
+from apex.core.constants import PERIOD_ELEMENTS_BY_SYMBOL
 
 from apex.utils import (
     judge_flow,
@@ -49,15 +52,32 @@ class DPGen2(ConcurrentLearningFramework):
         return self._config
 
     @staticmethod
-    def modify_inlammps(inlammps: os.PathLike):
+    def modify_inlammps(inlammps: os.PathLike, num_elements: int = 103):
         with open(inlammps, 'r') as f:
             lines = f.readlines()
+        mass_line_indices = []
         for idx, line in enumerate(lines):
             # if line starts with "dump", replace the word after "dump" by "dpgen2_dump
             if line.startswith("dump"):
                 new_line = line.split()
                 new_line[1] = "dpgen_dump"
                 lines[idx] = " ".join(new_line) + "\n"
+            if line.startswith("read_data"):
+                mass_line_idx = idx + 1
+            # if line starts with "mass", delete the line, and record the line index
+            if line.startswith("mass"):
+                mass_line_indices.append(idx)
+            if line.startswith("pair_coeff"):
+                elements = " ".join(PERIOD_ELEMENTS_BY_SYMBOL[:num_elements])
+                lines[idx] = f"pair_coeff * * {elements}\n"
+        # Delete the mass lines after the loop
+        for idx in reversed(mass_line_indices):
+            del lines[idx]
+        # insert new mass lines at mass_line_idx
+        new_mass_line = ""
+        for ii in range(num_elements):
+            new_mass_line += "mass            %d %.3f\n" % (ii + 1, Element(PERIOD_ELEMENTS_BY_SYMBOL[ii]).mass)
+        lines.insert(mass_line_idx, new_mass_line)
         with open(inlammps, 'w') as f:
             f.writelines(lines)
 
