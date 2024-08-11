@@ -122,7 +122,7 @@ def invoke_external_concurrent_learning_framework(
     print('Writing input files...')
     framework.prepare(target_confs)
     if not prepare_only:
-        print(f'Invoking external concurrent learning framework {method}...')
+        print(f'Invoking external concurrent learning framework: {method}...')
         framework.invoke()
 
 
