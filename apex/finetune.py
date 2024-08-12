@@ -76,7 +76,7 @@ class DPGen2(ConcurrentLearningFramework):
         # insert new mass lines at mass_line_idx
         new_mass_line = ""
         for ii in range(num_elements):
-            new_mass_line += "mass            %d %.3f\n" % (ii + 1, Element(PERIOD_ELEMENTS_BY_SYMBOL[ii]).mass)
+            new_mass_line += f"mass     {ii + 1} {Element(PERIOD_ELEMENTS_BY_SYMBOL[ii]).mass}\n"
         lines.insert(mass_line_idx, new_mass_line)
         with open(inlammps, 'w') as f:
             f.writelines(lines)
