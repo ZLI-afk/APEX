@@ -82,7 +82,7 @@ class Gamma(Property):
     def make_confs(self, path_to_work, path_to_equi, refine=False):
         path_to_work = os.path.abspath(path_to_work)
         if os.path.exists(path_to_work):
-            logging.warning("%s already exists" % path_to_work)
+            logging.debug("%s already exists" % path_to_work)
         else:
             os.makedirs(path_to_work)
         path_to_equi = os.path.abspath(path_to_equi)
@@ -108,7 +108,7 @@ class Gamma(Property):
         cwd = os.getcwd()
 
         if self.reprod:
-            logging.info("gamma line reproduce starts")
+            print("gamma line reproduce starts")
             if "init_data_path" not in self.parameter:
                 raise RuntimeError("please provide the initial data path to reproduce")
             init_data_path = os.path.abspath(self.parameter["init_data_path"])
@@ -121,7 +121,7 @@ class Gamma(Property):
 
         else:
             if refine:
-                logging.info("gamma line refine starts")
+                print("gamma line refine starts")
                 task_list = make_refine(
                     self.parameter["init_from_suffix"],
                     self.parameter["output_suffix"],
@@ -247,18 +247,16 @@ class Gamma(Property):
                             os.remove(jj)
                     task_list.append(output_task)
                     # print("# %03d generate " % ii, output_task)
-                    logging.info(
-                        "# %03d generate " % count,
-                        output_task,
-                        " \t %d atoms" % len(obtained_slab.sites)
-                    )
+
+                    logging.info(f"# {count} generate {output_task}, with {len(obtained_slab.sites)} atoms")
+
                     # make confs
                     obtained_slab.to("POSCAR.tmp", "POSCAR")
                     vasp_utils.regulate_poscar("POSCAR.tmp", "POSCAR")
                     vasp_utils.sort_poscar("POSCAR", "POSCAR", ptypes)
                     if self.inter_param["type"] == "abacus":
                         abacus_utils.poscar2stru("POSCAR", self.inter_param, "STRU")
-                        os.remove("POSCAR")
+                        #os.remove("POSCAR")
                     # vasp.perturb_xz('POSCAR', 'POSCAR', self.pert_xz)
                     # record miller
                     dumpfn(self.plane_miller, "miller.json")
@@ -435,7 +433,7 @@ class Gamma(Property):
 
     def __stru_fix(self, stru) -> None:
         fix_dict = {"true": True, "false": False}
-        fix_xyz = [fix_dict[i] for i in self.addfix]
+        fix_xyz = [fix_dict[i] for i in self.add_fix]
         abacus_utils.stru_fix_atom(stru, fix_atom=fix_xyz)
 
     def __inLammpes_fix(self, inLammps) -> None:

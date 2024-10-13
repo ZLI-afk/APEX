@@ -33,7 +33,7 @@ class Elastic(Property):
             self.shear_deform = parameter["shear_deform"]
             parameter.setdefault("conventional", False)
             self.conventional = parameter["conventional"]
-            parameter.setdefault("ieee", True)
+            parameter.setdefault("ieee", False)
             self.ieee = parameter["ieee"]
         parameter.setdefault("cal_type", "relaxation")
         self.cal_type = parameter["cal_type"]
@@ -55,7 +55,7 @@ class Elastic(Property):
     def make_confs(self, path_to_work, path_to_equi, refine=False):
         path_to_work = os.path.abspath(path_to_work)
         if os.path.exists(path_to_work):
-            logging.warning("%s already exists" % path_to_work)
+            logging.debug("%s already exists" % path_to_work)
         else:
             os.makedirs(path_to_work)
         path_to_equi = os.path.abspath(path_to_equi)
@@ -96,7 +96,7 @@ class Elastic(Property):
         os.chdir(cwd)
 
         if refine:
-            logging.info("elastic refine starts")
+            print("elastic refine starts")
             task_list = make_refine(
                 self.parameter["init_from_suffix"],
                 self.parameter["output_suffix"],

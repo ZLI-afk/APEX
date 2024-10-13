@@ -51,7 +51,7 @@ class Vacancy(Property):
     def make_confs(self, path_to_work, path_to_equi, refine=False):
         path_to_work = os.path.abspath(path_to_work)
         if os.path.exists(path_to_work):
-            logging.warning("%s already exists" % path_to_work)
+            logging.debug("%s already exists" % path_to_work)
         else:
             os.makedirs(path_to_work)
         path_to_equi = os.path.abspath(path_to_equi)
@@ -78,7 +78,7 @@ class Vacancy(Property):
         cwd = os.getcwd()
 
         if self.reprod:
-            logging.info("vacancy reproduce starts")
+            print("vacancy reproduce starts")
             if "init_data_path" not in self.parameter:
                 raise RuntimeError("please provide the initial data path to reproduce")
             init_data_path = os.path.abspath(self.parameter["init_data_path"])
@@ -92,7 +92,7 @@ class Vacancy(Property):
 
         else:
             if refine:
-                logging.info("vacancy refine starts")
+                print("vacancy refine starts")
                 task_list = make_refine(
                     self.parameter["init_from_suffix"],
                     self.parameter["output_suffix"],
@@ -142,7 +142,7 @@ class Vacancy(Property):
                         jj.get_supercell_structure(sc_mat=np.diag(self.supercell, k=0))
                     )
 
-                logging.info("gen vacancy with supercell " + str(self.supercell))
+                print("gen vacancy with supercell " + str(self.supercell))
                 os.chdir(path_to_work)
                 if os.path.exists(POSCAR):
                     os.remove(POSCAR)
@@ -167,7 +167,7 @@ class Vacancy(Property):
                     dss[ii].to("POSCAR", "POSCAR")
                     if self.inter_param["type"] == "abacus":
                         abacus_utils.poscar2stru("POSCAR", self.inter_param, "STRU")
-                        os.remove("POSCAR")
+                        #os.remove("POSCAR")
                     # np.savetxt('supercell.out', self.supercell, fmt='%d')
                     dumpfn(self.supercell, "supercell.json")
         os.chdir(cwd)

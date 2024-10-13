@@ -29,6 +29,8 @@ class Config:
     email: str = None
     password: str = None
     program_id: int = None
+    job_type: str = "container"
+    platform: str = "ali"
 
     # DispachterExecutor config
     dispatcher_config: dict = None
@@ -57,6 +59,7 @@ class Config:
     group_size: int = None
     pool_size: int = None
     upload_python_packages: list = field(default_factory=list)
+    exclude_upload_files: list = field(default_factory=list)
     lammps_image_name: str = None
     lammps_run_command: str = None
     vasp_image_name: str = None
@@ -108,8 +111,8 @@ class Config:
                     "password": self.password,
                     "program_id": self.program_id,
                     "input_data": {
-                        "job_type": "container",
-                        "platform": "ali",
+                        "job_type": self.job_type,
+                        "platform": self.platform,
                         "scass_type": self.scass_type,
                     },
                 },
@@ -280,7 +283,7 @@ class Config:
             self,
             dispatcher_config: dict
     ) -> DispatcherExecutor:
-        if not (self.context_type or self.machine):
+        if not (self.context_type or self.machine or self.dispatcher_config):
             executor = None
         else:
             # get arguments for instantiation of the DispatcherExecutor

@@ -60,7 +60,7 @@ class Surface(Property):
     def make_confs(self, path_to_work, path_to_equi, refine=False):
         path_to_work = os.path.abspath(path_to_work)
         if os.path.exists(path_to_work):
-            logging.warning("%s already exists" % path_to_work)
+            logging.debug("%s already exists" % path_to_work)
         else:
             os.makedirs(path_to_work)
         path_to_equi = os.path.abspath(path_to_equi)
@@ -101,7 +101,7 @@ class Surface(Property):
 
         else:
             if refine:
-                logging.info("surface refine starts")
+                print("surface refine starts")
                 task_list = make_refine(
                     self.parameter["init_from_suffix"],
                     self.parameter["output_suffix"],
@@ -174,11 +174,9 @@ class Surface(Property):
                         if os.path.exists(jj):
                             os.remove(jj)
                     task_list.append(output_task)
-                    logging.info(
-                        "# %03d generate " % ii,
-                        output_task,
-                        " \t %d atoms" % len(all_slabs[ii].sites),
-                    )
+
+                    logging.info(f"{ii} generate {output_task} {len(all_slabs[ii].sites)} atoms")
+
                     # make confs
                     all_slabs[ii].to("POSCAR.tmp", "POSCAR")
                     vasp_utils.regulate_poscar("POSCAR.tmp", "POSCAR")
@@ -186,7 +184,7 @@ class Surface(Property):
                     vasp_utils.perturb_xz("POSCAR", "POSCAR", self.pert_xz)
                     if self.inter_param["type"] == "abacus":
                         abacus_utils.poscar2stru("POSCAR", self.inter_param, "STRU")
-                        os.remove("POSCAR")
+                        #os.remove("POSCAR")
                     # record miller
                     dumpfn(all_slabs[ii].miller_index, "miller.json")
         
