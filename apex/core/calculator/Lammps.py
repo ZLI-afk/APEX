@@ -14,7 +14,8 @@ from apex.core.calculator.lib.lammps_utils import (
     inter_snap,
     inter_gap,
     inter_rann,
-    inter_mace
+    inter_mace,
+    inter_dpa2,
 )
 from .Task import Task
 from dflow.python import upload_packages
@@ -22,7 +23,7 @@ from . import LAMMPS_INTER_TYPE
 upload_packages.append(__file__)
 
 # LAMMPS_INTER_TYPE = ['deepmd', 'eam_alloy', 'meam', 'eam_fs', 'meam_spline', 'snap', 'gap', 'rann', 'mace']
-MULTI_MODELS_INTER_TYPE = ["meam", "snap", "gap"]
+
 
 class Lammps(Task):
     def __init__(self, inter_parameter, path_to_poscar):
@@ -30,7 +31,7 @@ class Lammps(Task):
         self.inter_type = inter_parameter["type"]
         self.type_map = inter_parameter["type_map"]
         self.in_lammps = inter_parameter.get("in_lammps", "auto")
-        if self.inter_type in MULTI_MODELS_INTER_TYPE:
+        if self.inter_type in ["meam", "snap"]:
             self.model = list(map(os.path.abspath, inter_parameter["model"]))
         else:
             self.model = os.path.abspath(inter_parameter["model"])
@@ -55,12 +56,14 @@ class Lammps(Task):
             self.inter_func = inter_rann
         elif self.inter_type == "mace":
             self.inter_func = inter_mace
+        elif self.inter_type == "dpa2":
+            self.inter_func = inter_dpa2
         else:
             self.inter_func = inter_eam_alloy
 
     def set_model_param(self):
         deepmd_version = self.inter.get("deepmd_version", "2.1.1")
-        if self.inter_type == "deepmd":
+        if self.inter_type in ["deepmd", "dpa2"]:
             model_name = os.path.basename(self.model)
             self.model_param = {
                 "type": self.inter_type,
