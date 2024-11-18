@@ -22,6 +22,7 @@ from dflow.python import upload_packages
 from . import LAMMPS_INTER_TYPE
 upload_packages.append(__file__)
 
+MULTI_MODELS_INTER_TYPE = ["meam", "snap", "gap"]
 # LAMMPS_INTER_TYPE = ['deepmd', 'eam_alloy', 'meam', 'eam_fs', 'meam_spline', 'snap', 'gap', 'rann', 'mace']
 
 
