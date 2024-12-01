@@ -8,6 +8,7 @@ from monty.serialization import dumpfn, loadfn
 from pymatgen.analysis.elasticity.elastic import ElasticTensor
 from pymatgen.analysis.elasticity.strain import DeformedStructureSet, Strain
 from pymatgen.analysis.elasticity.stress import Stress
+from pymatgen.analysis.structure_matcher import StructureMatcher
 from pymatgen.core.structure import Structure
 from pymatgen.core.tensors import Tensor
 from pymatgen.core.operations import SymmOp
@@ -33,6 +34,8 @@ class Elastic(Property):
             self.shear_deform = parameter["shear_deform"]
             parameter.setdefault("conventional", False)
             self.conventional = parameter["conventional"]
+            parameter.setdefault("primitive", False)
+            self.primitive = parameter["primitive"]
             parameter.setdefault("ieee", False)
             self.ieee = parameter["ieee"]
             parameter.setdefault("modulus_type", "voigt")
@@ -140,11 +143,19 @@ class Elastic(Property):
                 ss = abacus_utils.stru2Structure(equi_contcar)
             else:
                 ss = Structure.from_file(equi_contcar)
+            orig_ss = ss.copy()
+
             # find conventional cell
             if self.conventional:
                 st = StructureInfo(ss)
                 ss = st.conventional_structure
                 ss.to(os.path.join(path_to_work, "POSCAR.conv"), "POSCAR")
+
+            # find primitive cell
+            if self.primitive:
+                st = StructureInfo(ss)
+                ss = st.primitive_structure
+                ss.to(os.path.join(path_to_work, "POSCAR.prim"), "POSCAR")
 
             # convert to IEEE-standard
             if self.ieee:
@@ -152,6 +163,11 @@ class Elastic(Property):
                 op = SymmOp.from_rotation_and_translation(rot)
                 ss.apply_operation(op)
                 ss.to(os.path.join(path_to_work, "POSCAR.ieee"), "POSCAR")
+
+            # test if the structure is the same
+            if not StructureMatcher().fit(orig_ss, ss):
+                print("Warning: The structure is changed after conversion, will adopt the new structure")
+                ss.to(os.path.join(path_to_work, "POSCAR.new"), "POSCAR")
 
             dfm_ss = DeformedStructureSet(
                 ss,
