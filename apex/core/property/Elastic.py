@@ -287,14 +287,23 @@ class Elastic(Property):
         EV = 9 * BV * GV / (3 * BV + GV)
         uV = 0.5 * (3 * BV - 2 * GV) / (3 * BV + GV)
 
+        # calculate bulk modulus over density
+        ss = Structure.from_file(os.path.join(os.path.dirname(output_file), "POSCAR"))
+        density = ss.density
+        bod = BV / density
+
         res_data["B"] = BV
         res_data["G"] = GV
         res_data["E"] = EV
         res_data["u"] = uV
+        res_data["density"] = density
+        res_data["bod"] = bod
         ptr_data += "# Bulk   Modulus B = %.2f GPa\n" % BV
         ptr_data += "# Shear  Modulus G = %.2f GPa\n" % GV
         ptr_data += "# Youngs Modulus E = %.2f GPa\n" % EV
         ptr_data += "# Poission Ratio u = %.2f\n " % uV
+        ptr_data += "# Density = %.2f g/cm^3\n" % density
+        ptr_data += "# Bulk Modulus over Density (bod) = %.2f GPa\n" % bod
 
         dumpfn(res_data, output_file, indent=4)
 
