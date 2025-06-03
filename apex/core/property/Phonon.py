@@ -252,6 +252,7 @@ class Phonon(Property):
                         fp.write(ret)
                     # generate task.000*
                     stru_list = glob.glob("STRU-0*")
+                    stru_list.sort()
                     for ii in range(len(stru_list)):
                         task_path = os.path.join(path_to_work, 'task.%06d' % ii)
                         os.makedirs(task_path, exist_ok=True)
